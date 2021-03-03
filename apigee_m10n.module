@@ -49,6 +49,12 @@ function apigee_m10n_theme($existing, $type, $theme, $path) {
     'apigee_entity__product_bundle' => [
       'base hook' => 'apigee_entity',
     ],
+    'apigee_entity__xrate_plan' => [
+      'base hook' => 'apigee_entity',
+    ],
+    'apigee_entity__xproduct' => [
+      'base hook' => 'apigee_entity',
+    ],
     'api_product' => [
       'variables' => ['api_product' => NULL],
     ],
@@ -61,6 +67,20 @@ function apigee_m10n_theme($existing, $type, $theme, $path) {
         'entity' => NULL,
       ],
       'template' => 'rate-plan-detail',
+    ],
+    'rate_plan_xfee' => [
+      'variables' => [
+        'detail' => NULL,
+        'entity' => NULL,
+      ],
+      'template' => 'rate-plan-xfee',
+    ],
+    'rate_plan_fixed_recurringfee' => [
+      'variables' => [
+        'detail' => NULL,
+        'entity' => NULL,
+      ],
+      'template' => 'rate-plan-fixed-recurringfee',
     ],
     'ratecard_rates' => [
       'variables' => [

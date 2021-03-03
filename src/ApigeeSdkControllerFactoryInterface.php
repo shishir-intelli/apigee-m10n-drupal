@@ -21,6 +21,7 @@ namespace Drupal\apigee_m10n;
 
 use Apigee\Edge\Api\Management\Entity\CompanyInterface;
 use Apigee\Edge\Api\Monetization\Controller\ApiPackageControllerInterface;
+use Apigee\Edge\Api\Monetization\Controller\ApiXProductControllerInterface;
 use Apigee\Edge\Api\Monetization\Controller\ApiProductControllerInterface;
 use Apigee\Edge\Api\Monetization\Controller\CompanyPrepaidBalanceControllerInterface;
 use Apigee\Edge\Api\Monetization\Controller\DeveloperAcceptedRatePlanController;
@@ -28,6 +29,7 @@ use Apigee\Edge\Api\Monetization\Controller\DeveloperController;
 use Apigee\Edge\Api\Monetization\Controller\DeveloperPrepaidBalanceControllerInterface;
 use Apigee\Edge\Api\Monetization\Controller\DeveloperReportDefinitionControllerInterface;
 use Apigee\Edge\Api\Monetization\Controller\RatePlanControllerInterface;
+use Apigee\Edge\Api\Monetization\Controller\XRatePlanControllerInterface;
 use Apigee\Edge\Api\Monetization\Controller\DeveloperTermsAndConditionsController;
 use Apigee\Edge\Api\Monetization\Controller\SupportedCurrencyControllerInterface;
 use Apigee\Edge\Api\Monetization\Controller\TermsAndConditionsControllerInterface;
@@ -96,12 +98,28 @@ interface ApigeeSdkControllerFactoryInterface {
   public function apiPackageController(): ApiPackageControllerInterface;
 
   /**
+   * Creates an API xproduct SDK controller.
+   *
+   * @return \Apigee\Edge\Api\Monetization\Controller\ApiXProductControllerInterface
+   *   The SDK controller.
+   */
+  public function apiXProductController(): ApiXProductControllerInterface;
+
+  /**
    * Creates a rate plan controller.
    *
    * @return \Apigee\Edge\Api\Monetization\Controller\RatePlanControllerInterface
    *   The controller.
    */
   public function ratePlanController($product_bundle_id): RatePlanControllerInterface;
+
+  /**
+   * Creates a rate plan controller.
+   *
+   * @return \Apigee\Edge\Api\Monetization\Controller\XRatePlanControllerInterface
+   *   The controller.
+   */
+  public function xratePlanController($product_bundle_id): XRatePlanControllerInterface;
 
   /**
    * Creates a developer accepted rate plan controller.

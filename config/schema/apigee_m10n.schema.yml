@@ -6,6 +6,14 @@ apigee_m10n.rate_plan.config:
       type: string
       label: 'View mode to use for rate plans on the "Pricing and plans" page.'
 
+apigee_m10n.xrate_plan.config:
+  type: config_object
+  label: 'Rate plan X settings'
+  mapping:
+    catalog_view_mode:
+      type: string
+      label: 'View mode to use for rate plans on the "Buy Apis" page.'
+
 apigee_m10n.prepaid_balance.config:
   type: config_object
   label: 'Prepaid balance settings'

@@ -22,6 +22,8 @@ namespace Drupal\apigee_m10n;
 use Apigee\Edge\Api\Management\Entity\CompanyInterface;
 use Apigee\Edge\Api\Monetization\Controller\ApiPackageController;
 use Apigee\Edge\Api\Monetization\Controller\ApiPackageControllerInterface;
+use Apigee\Edge\Api\Monetization\Controller\ApiXProductController;
+use Apigee\Edge\Api\Monetization\Controller\ApiXProductControllerInterface;
 use Apigee\Edge\Api\Monetization\Controller\ApiProductController;
 use Apigee\Edge\Api\Monetization\Controller\ApiProductControllerInterface;
 use Apigee\Edge\Api\Monetization\Controller\CompanyPrepaidBalanceController;
@@ -34,6 +36,8 @@ use Apigee\Edge\Api\Monetization\Controller\DeveloperReportDefinitionController;
 use Apigee\Edge\Api\Monetization\Controller\DeveloperReportDefinitionControllerInterface;
 use Apigee\Edge\Api\Monetization\Controller\RatePlanController;
 use Apigee\Edge\Api\Monetization\Controller\RatePlanControllerInterface;
+use Apigee\Edge\Api\Monetization\Controller\XRatePlanController;
+use Apigee\Edge\Api\Monetization\Controller\XRatePlanControllerInterface;
 use Apigee\Edge\Api\Monetization\Controller\SupportedCurrencyController;
 use Apigee\Edge\Api\Monetization\Controller\SupportedCurrencyControllerInterface;
 use Apigee\Edge\Api\Monetization\Controller\TermsAndConditionsController;
@@ -174,12 +178,43 @@ class ApigeeSdkControllerFactory implements ApigeeSdkControllerFactoryInterface 
   /**
    * {@inheritdoc}
    */
+  public function apiXProductController(): ApiXProductControllerInterface {
+    if (empty($this->controllers[__FUNCTION__])) {
+      // Create a new org controller.
+      $this->controllers[__FUNCTION__] = new ApiXProductController(
+        $this->getOrganization(),
+        $this->getClient()
+      );
+    }
+    return $this->controllers[__FUNCTION__];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function ratePlanController($product_bundle_id): RatePlanControllerInterface {
     if (empty($this->controllers[__FUNCTION__][$product_bundle_id])) {
       // Don't assume the bucket has been initialized.
       $this->controllers[__FUNCTION__] = $this->controllers[__FUNCTION__] ?? [];
       // Create a new rate plan controller.
       $this->controllers[__FUNCTION__][$product_bundle_id] = new RatePlanController(
+        $product_bundle_id,
+        $this->getOrganization(),
+        $this->getClient()
+      );
+    }
+    return $this->controllers[__FUNCTION__][$product_bundle_id];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function xratePlanController($product_bundle_id): XRatePlanControllerInterface {
+    if (empty($this->controllers[__FUNCTION__][$product_bundle_id])) {
+      // Don't assume the bucket has been initialized.
+      $this->controllers[__FUNCTION__] = $this->controllers[__FUNCTION__] ?? [];
+      // Create a new rate plan controller.
+      $this->controllers[__FUNCTION__][$product_bundle_id] = new XRatePlanController(
         $product_bundle_id,
         $this->getOrganization(),
         $this->getClient()
