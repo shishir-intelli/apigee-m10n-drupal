@@ -106,7 +106,7 @@ class AddCreditPrepaidBalanceToAnyDeveloperTest extends AddCreditFunctionalJavas
     $this->stack->queueMockResponse(['get-apigeex-billing-type']);
 
     $this->queueApigeexDeveloperResponse($this->accountUser);
-    $this->stack->queueMockResponse(['get_apigeex_prepaid_balances']);
+    $this->stack->queueMockResponse(['get-apigeex-prepaid-balances']);
 
     $this->drupalGet(Url::fromRoute('apigee_monetization.xbilling', [
       'user' => $this->accountUser->id(),

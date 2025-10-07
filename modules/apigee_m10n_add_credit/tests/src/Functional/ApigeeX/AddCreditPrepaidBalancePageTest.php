@@ -89,7 +89,7 @@ class AddCreditPrepaidBalancePageTest extends AddCreditFunctionalTestBase {
 
     $this->queueApigeexDeveloperResponse($this->developer);
     $this->stack->queueMockResponse([
-      'get_apigeex_prepaid_balances',
+      'get-apigeex-prepaid-balances',
     ]);
 
     $this->drupalGet(Url::fromRoute('apigee_monetization.xbilling', [
@@ -114,7 +114,7 @@ class AddCreditPrepaidBalancePageTest extends AddCreditFunctionalTestBase {
     $this->setAddCreditProductForCurrencyId($this->product, 'aud');
     $this->queueApigeexDeveloperResponse($this->developer);
     $this->stack->queueMockResponse([
-      'get_apigeex_prepaid_balances',
+      'get-apigeex-prepaid-balances',
     ]);
     $this->drupalGet(Url::fromRoute('apigee_monetization.xbilling', [
       'user' => $this->developer->id(),
@@ -127,7 +127,7 @@ class AddCreditPrepaidBalancePageTest extends AddCreditFunctionalTestBase {
     $this->product->setUnpublished()->save();
     $this->queueApigeexDeveloperResponse($this->developer);
     $this->stack->queueMockResponse([
-      'get_apigeex_prepaid_balances',
+      'get-apigeex-prepaid-balances',
     ]);
     $this->drupalGet(Url::fromRoute('apigee_monetization.xbilling', [
       'user' => $this->developer->id(),
@@ -142,7 +142,7 @@ class AddCreditPrepaidBalancePageTest extends AddCreditFunctionalTestBase {
     $this->product->save();
     $this->queueApigeexDeveloperResponse($this->developer);
     $this->stack->queueMockResponse([
-      'get_apigeex_prepaid_balances',
+      'get-apigeex-prepaid-balances',
     ]);
     $this->drupalGet(Url::fromRoute('apigee_monetization.xbilling', [
       'user' => $this->developer->id(),
