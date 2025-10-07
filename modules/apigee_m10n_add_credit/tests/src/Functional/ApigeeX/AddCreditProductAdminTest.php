@@ -92,6 +92,16 @@ class AddCreditProductAdminTest extends AddCreditFunctionalTestBase {
       ])
       ->save();
 
+    // Disable the price field and enable the price range field.
+    $this->container->get('entity_type.manager')
+      ->getStorage('entity_form_display')
+      ->load('commerce_product_variation.default.default')
+      ->removeComponent('price')
+      ->setComponent('apigee_price_range', [
+        'region' => 'content',
+      ])
+      ->save();
+
     // Go to the "Add product" page.
     $this->drupalGet('product/add/default');
     $this->assertSession()->checkboxChecked(AddCreditConfig::ADD_CREDIT_ENABLED_FIELD_NAME . '[value]');
