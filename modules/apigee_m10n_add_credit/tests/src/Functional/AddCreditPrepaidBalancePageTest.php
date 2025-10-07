@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2021 Google Inc.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License version 2 as published by the
@@ -17,7 +17,7 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-namespace Drupal\Tests\apigee_m10n_add_credit\Functional;
+namespace Drupal\Tests\apigee_m10n_add_credit\Functional\ApigeeX;
 
 use Drupal\Core\Url;
 use Drupal\apigee_m10n_add_credit\AddCreditConfig;
@@ -52,8 +52,13 @@ class AddCreditPrepaidBalancePageTest extends AddCreditFunctionalTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
+    $this->warmApigeexOrganizationCache();
+    $this->stack->queueMockResponse(['post-apigeex-billing-type']);
 
-    $this->developer = $this->signIn(['view own prepaid balance', 'add credit to own developer prepaid balance']);
+    $this->developer = $this->signIn([
+      'view own prepaid balance',
+      'add credit to own developer prepaid balance',
+    ], 'prepaid');
 
     // Enable add credit for the product type.
     $product_type = ProductType::load('default');
@@ -65,6 +70,8 @@ class AddCreditPrepaidBalancePageTest extends AddCreditFunctionalTestBase {
     $this->product = $this->createCommerceProduct($this->createCommerceStore(), $variation);
 
     $this->createCommercePaymentGateway();
+    \Drupal::service('commerce_price.currency_importer')->import('AUD');
+
   }
 
   /**
@@ -73,16 +80,19 @@ class AddCreditPrepaidBalancePageTest extends AddCreditFunctionalTestBase {
    * @covers \Drupal\apigee_m10n_add_credit\AddCreditService::apigeeM10nPrepaidBalanceListAlter
    */
   public function testAddCreditButtonForCurrency() {
+    $this->warmApigeexOrganizationCache();
 
     // Configure an add credit product for USD.
     // There should be an add credit button for usd but NOT for aud.
     $this->setAddCreditProductForCurrencyId($this->product, 'usd');
-    $this->queueDeveloperResponse($this->developer);
-    $this->queueMockResponses([
-      'get-prepaid-balances',
-      'get-supported-currencies',
+    $this->stack->queueMockResponse(['get-apigeex-billing-type']);
+
+    $this->queueApigeexDeveloperResponse($this->developer);
+    $this->stack->queueMockResponse([
+      'get-apigeex-prepaid-balances',
     ]);
-    $this->drupalGet(Url::fromRoute('apigee_monetization.billing', [
+
+    $this->drupalGet(Url::fromRoute('apigee_monetization.xbilling', [
       'user' => $this->developer->id(),
     ]));
     $this->assertSession()->elementExists('css', '.add-credit--usd.dropbutton');
@@ -102,11 +112,11 @@ class AddCreditPrepaidBalancePageTest extends AddCreditFunctionalTestBase {
     // Configure an add credit product for AUD.
     // There should be an add credit button for BOTH usd and aud.
     $this->setAddCreditProductForCurrencyId($this->product, 'aud');
-    $this->queueMockResponses([
-      'get-prepaid-balances',
-      'get-supported-currencies',
+    $this->queueApigeexDeveloperResponse($this->developer);
+    $this->stack->queueMockResponse([
+      'get-apigeex-prepaid-balances',
     ]);
-    $this->drupalGet(Url::fromRoute('apigee_monetization.billing', [
+    $this->drupalGet(Url::fromRoute('apigee_monetization.xbilling', [
       'user' => $this->developer->id(),
     ]));
     $this->assertSession()->elementExists('css', '.add-credit--usd.dropbutton');
@@ -115,11 +125,11 @@ class AddCreditPrepaidBalancePageTest extends AddCreditFunctionalTestBase {
     // Unpublish the add credit product.
     // There should NOT be any add credit button.
     $this->product->setUnpublished()->save();
-    $this->queueMockResponses([
-      'get-prepaid-balances',
-      'get-supported-currencies',
+    $this->queueApigeexDeveloperResponse($this->developer);
+    $this->stack->queueMockResponse([
+      'get-apigeex-prepaid-balances',
     ]);
-    $this->drupalGet(Url::fromRoute('apigee_monetization.billing', [
+    $this->drupalGet(Url::fromRoute('apigee_monetization.xbilling', [
       'user' => $this->developer->id(),
     ]));
     $this->assertSession()->elementNotExists('css', '.add-credit--usd.dropbutton');
@@ -130,11 +140,11 @@ class AddCreditPrepaidBalancePageTest extends AddCreditFunctionalTestBase {
     $this->product->setPublished();
     $this->product->set(AddCreditConfig::ADD_CREDIT_ENABLED_FIELD_NAME, FALSE);
     $this->product->save();
-    $this->queueMockResponses([
-      'get-prepaid-balances',
-      'get-supported-currencies',
+    $this->queueApigeexDeveloperResponse($this->developer);
+    $this->stack->queueMockResponse([
+      'get-apigeex-prepaid-balances',
     ]);
-    $this->drupalGet(Url::fromRoute('apigee_monetization.billing', [
+    $this->drupalGet(Url::fromRoute('apigee_monetization.xbilling', [
       'user' => $this->developer->id(),
     ]));
     $this->assertSession()->elementNotExists('css', '.add-credit--usd.dropbutton');
