@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2018 Google Inc.
+ * Copyright 2021 Google Inc.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU General Public License version 2 as published by the
@@ -17,7 +17,7 @@
  * Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
  */
 
-namespace Drupal\Tests\apigee_m10n_add_credit\Functional;
+namespace Drupal\Tests\apigee_m10n_add_credit\Functional\ApigeeX;
 
 use Drupal\Core\Url;
 use Drupal\commerce_product\Entity\ProductType;
@@ -74,16 +74,20 @@ class AddCreditPermissionsTest extends AddCreditFunctionalTestBase {
    * @covers \Drupal\apigee_m10n_add_credit\AddCreditService::commerceProductAccess
    */
   public function testPermissionsForAddCreditProducts() {
-    $path = $this->product->toUrl()->toString();
+    $path = $this->product->toUrl();
 
     // Create and sign in a user with no add credit permissions.
+    $this->warmApigeexOrganizationCache();
+    $this->stack->queueMockResponse(['post-apigeex-billing-type']);
     $this->developer = $this->signIn();
 
     // User should see access denied on an add credit product.
     $this->drupalGet($path);
     $this->assertSession()->responseContains('Access denied');
 
-    $this->developer = $this->signIn(['add credit to own developer prepaid balance']);
+    $this->stack->queueMockResponse(['post-apigeex-billing-type']);
+    $this->developer = $this->signIn(['add credit to own developer prepaid balance'], 'Prepaid');
+
     $this->drupalGet($path);
     $this->assertSession()->responseNotContains('Access denied');
   }
@@ -99,25 +103,52 @@ class AddCreditPermissionsTest extends AddCreditFunctionalTestBase {
     $this->setAddCreditProductForCurrencyId($this->product, 'usd');
 
     // Create and sign in a user with no add credit permissions.
-    $this->developer = $this->signIn(['view own prepaid balance']);
-    $this->queueDeveloperResponse($this->developer);
-    $this->queueMockResponses([
-      'get-prepaid-balances',
-      'get-supported-currencies',
+    $this->warmApigeexOrganizationCache();
+    $this->stack->queueMockResponse(['post-apigeex-billing-type']);
+    $this->developer = $this->signIn(['view own prepaid balance'], 'prepaid');
+
+    $this->queueApigeexDeveloperResponse($this->developer);
+    $this->stack->queueMockResponse(['get-apigeex-billing-type']);
+
+    $this->queueApigeexDeveloperResponse($this->developer);
+    $this->stack->queueMockResponse([
+      'get-apigeex-prepaid-balances' => (object) [
+        "currency_code" => 'AUD',
+        "current_units_aud" => "20",
+        "current_nano_aud" => "560000000",
+
+        "currency_code" => 'USD',
+        "current_units_usd" => "15",
+        "current_nano_usd" => "340000000",
+      ],
     ]);
-    $this->drupalGet(Url::fromRoute('apigee_monetization.billing', [
+
+    $this->drupalGet(Url::fromRoute('apigee_monetization.xbilling', [
       'user' => $this->developer->id(),
     ]));
     $this->assertSession()->elementNotExists('css', '.add-credit.dropbutton');
 
     // Create and sign in a user with add credit permissions.
-    $this->developer = $this->signIn(['view own prepaid balance', 'add credit to own developer prepaid balance']);
-    $this->queueDeveloperResponse($this->developer);
-    $this->queueMockResponses([
-      'get-prepaid-balances',
-      'get-supported-currencies',
+    $this->stack->queueMockResponse(['post-apigeex-billing-type']);
+    $this->developer = $this->signIn([
+      'view own prepaid balance',
+      'add credit to own developer prepaid balance',
+    ], 'Prepaid');
+    $this->queueApigeexDeveloperResponse($this->developer);
+
+    $this->stack->queueMockResponse(['get-apigeex-billing-type']);
+
+    $this->queueApigeexDeveloperResponse($this->developer);
+    $this->stack->queueMockResponse([
+      'get-apigeex-prepaid-balances' => (object) [
+        "current_units_aud" => "20",
+        "current_nano_aud" => "560000000",
+
+        "current_units_usd" => "15",
+        "current_nano_usd" => "340000000",
+      ],
     ]);
-    $this->drupalGet(Url::fromRoute('apigee_monetization.billing', [
+    $this->drupalGet(Url::fromRoute('apigee_monetization.xbilling', [
       'user' => $this->developer->id(),
     ]));
     $this->assertSession()->elementExists('css', '.add-credit.dropbutton');
