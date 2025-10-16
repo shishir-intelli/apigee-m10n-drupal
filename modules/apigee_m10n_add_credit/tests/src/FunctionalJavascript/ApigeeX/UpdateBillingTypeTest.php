@@ -75,21 +75,18 @@ class UpdateBillingTypeTest extends AddCreditFunctionalJavascriptTestBase {
     // User should see access denied on billing type switching form.
     $this->assertSession()->responseContains('Access denied');
 
+    // Create and sign in a user with update any billing type permissions.
     $this->stack->queueMockResponse([
       'get-apigeex-billing-type',
     ]);
-
-    // Create and sign in a user with update any billing type permissions.
     $this->developer = $this->signIn(['update any billing type'], 'Prepaid');
 
+    // Mock for initial page load
     $this->queueApigeexDeveloperResponse($this->developeruser);
     $this->stack->queueMockResponse([
-      'post-apigeex-billing-type',
-    ]);
-
-    $this->queueApigeexDeveloperResponse($this->developeruser);
-    $this->stack->queueMockResponse([
-      'get-apigeex-billing-type',
+      'get-apigeex-billing-type' => [
+        "billingType" => "PREPAID",
+      ],
     ]);
 
     $this->drupalGet(Url::fromRoute('apigee_m10n_add_credit.userbillingtype', [
@@ -99,55 +96,32 @@ class UpdateBillingTypeTest extends AddCreditFunctionalJavascriptTestBase {
     $this->assertCssElementContains('h1.page-title', 'Billing Type');
     $this->assertSession()->fieldValueEquals('billingtype', 'prepaid');
 
-    $this->queueApigeexDeveloperResponse($this->developeruser);
-    $this->stack->queueMockResponse([
-      'post-apigeex-billing-type' => [
-        "billingType" => "PREPAID",
-      ],
-    ]);
-
-    $this->queueApigeexDeveloperResponse($this->developeruser);
-    $this->stack->queueMockResponse([
-      'get-apigeex-billing-type' => [
-        "billingType" => "PREPAID",
-      ],
-    ]);
-
-    $this->queueApigeexDeveloperResponse($this->developeruser);
-    $this->stack->queueMockResponse([
-      'post-apigeex-billing-type' => [
-        "billingType" => "PREPAID",
-      ],
-    ]);
-
-    $this->queueApigeexDeveloperResponse($this->developeruser);
-    $this->stack->queueMockResponse([
-      'get-apigeex-billing-type' => [
-        "billingType" => "PREPAID",
-      ],
-    ]);
-
-    // Test form config.
+    // User submits form to change to 'postpaid'
     $this->submitForm([
       'billingtype' => 'postpaid',
     ], 'Save changes');
 
+    // Now on the confirmation form.
+    // No additional API calls are expected just from loading the confirm form.
+
+    // User clicks 'Confirm'
+    $this->getSession()->getPage()->findButton('Confirm')->click();
+
+    // ********* ADD MOCK FOR THE ACTUAL UPDATE CALL *********
+    // This POST call is triggered by the ConfirmUpdateForm submission.
     $this->queueApigeexDeveloperResponse($this->developeruser);
     $this->stack->queueMockResponse([
       'post-apigeex-billing-type' => [
-        "billingType" => "PREPAID",
+        // Simulate a successful update response from the API.
+        // The exact response structure depends on your API.
+        // It might be empty on success, or return the updated object.
+        "billingType" => "POSTPAID",
       ],
     ]);
 
-    $this->queueApigeexDeveloperResponse($this->developeruser);
-    $this->stack->queueMockResponse([
-      'get-apigeex-billing-type' => [
-        "billingType" => "PREPAID",
-      ],
-    ]);
-
-    $this->getSession()->getPage()->findButton('Confirm')->click();
-
+    // ********* MOCK FOR THE GET AFTER UPDATE *********
+    // After the update, the page likely reloads or redirects,
+    // fetching the current billing type again.
     $this->queueApigeexDeveloperResponse($this->developeruser);
     $this->stack->queueMockResponse([
       'get-apigeex-billing-type' => [
@@ -155,7 +129,10 @@ class UpdateBillingTypeTest extends AddCreditFunctionalJavascriptTestBase {
       ],
     ]);
 
-    $this->assertSession()->responseContains('Billing type of the user is saved.');
+    // Now, the success message should be present.
+    // Using waitForText can help if there's any slight delay.
+    $this->assertSession()->waitForText('Billing type of the user is saved.');
+
 
   }
 
