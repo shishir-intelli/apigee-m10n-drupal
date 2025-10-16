@@ -101,14 +101,8 @@ class UpdateBillingTypeTest extends AddCreditFunctionalJavascriptTestBase {
       'billingtype' => 'postpaid',
     ], 'Save changes');
 
-    // Now on the confirmation form.
-    // No additional API calls are expected just from loading the confirm form.
-
-    // User clicks 'Confirm'
     $this->getSession()->getPage()->findButton('Confirm')->click();
 
-    // ********* ADD MOCK FOR THE ACTUAL UPDATE CALL *********
-    // This POST call is triggered by the ConfirmUpdateForm submission.
     $this->queueApigeexDeveloperResponse($this->developeruser);
     $this->stack->queueMockResponse([
       'post-apigeex-billing-type' => [
@@ -119,9 +113,6 @@ class UpdateBillingTypeTest extends AddCreditFunctionalJavascriptTestBase {
       ],
     ]);
 
-    // ********* MOCK FOR THE GET AFTER UPDATE *********
-    // After the update, the page likely reloads or redirects,
-    // fetching the current billing type again.
     $this->queueApigeexDeveloperResponse($this->developeruser);
     $this->stack->queueMockResponse([
       'get-apigeex-billing-type' => [
@@ -129,8 +120,6 @@ class UpdateBillingTypeTest extends AddCreditFunctionalJavascriptTestBase {
       ],
     ]);
 
-    // Now, the success message should be present.
-    // Using waitForText can help if there's any slight delay.
     $this->assertSession()->waitForText('Billing type of the user is saved.');
   }
 
