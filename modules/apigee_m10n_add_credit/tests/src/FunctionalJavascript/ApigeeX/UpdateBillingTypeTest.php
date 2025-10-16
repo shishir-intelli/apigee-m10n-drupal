@@ -81,7 +81,7 @@ class UpdateBillingTypeTest extends AddCreditFunctionalJavascriptTestBase {
     ]);
     $this->developer = $this->signIn(['update any billing type'], 'Prepaid');
 
-    // Mock for initial page load
+    // Mock for initial page load.
     $this->queueApigeexDeveloperResponse($this->developeruser);
     $this->stack->queueMockResponse([
       'get-apigeex-billing-type' => [
@@ -96,7 +96,7 @@ class UpdateBillingTypeTest extends AddCreditFunctionalJavascriptTestBase {
     $this->assertCssElementContains('h1.page-title', 'Billing Type');
     $this->assertSession()->fieldValueEquals('billingtype', 'prepaid');
 
-    // User submits form to change to 'postpaid'
+    // User submits form to change to 'postpaid'.
     $this->submitForm([
       'billingtype' => 'postpaid',
     ], 'Save changes');
@@ -132,8 +132,6 @@ class UpdateBillingTypeTest extends AddCreditFunctionalJavascriptTestBase {
     // Now, the success message should be present.
     // Using waitForText can help if there's any slight delay.
     $this->assertSession()->waitForText('Billing type of the user is saved.');
-
-
   }
 
 }
