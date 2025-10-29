@@ -34,6 +34,11 @@ use Drupal\apigee_m10n\Plugin\Field\FieldType\MonetizationDeveloperFieldItem;
 class MonetizationDeveloperFormatterKernelTest extends MonetizationKernelTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected static $modules = ['file'];
+
+  /**
    * The formatter manager.
    *
    * @var \Drupal\Core\Field\FormatterPluginManager

@@ -32,6 +32,11 @@ use Drupal\apigee_m10n\Plugin\Field\FieldFormatter\PriceFormatter;
 class PriceFormatterKernelTest extends MonetizationKernelTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected static $modules = ['file'];
+
+  /**
    * The formatter manager.
    *
    * @var \Drupal\Core\Field\FormatterPluginManager
