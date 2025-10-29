@@ -36,7 +36,7 @@ class MonetizationDeveloperFormatterKernelTest extends MonetizationKernelTestBas
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['file'];
+  protected static $modules = ['file', 'system'];
 
   /**
    * The formatter manager.
@@ -92,7 +92,10 @@ class MonetizationDeveloperFormatterKernelTest extends MonetizationKernelTestBas
     $this->installSchema('user', ['users_data']);
     $this->installConfig([
       'user',
+      'system',
     ]);
+    $this->setSetting('file_public_path', 'sites/default/files');
+    \Drupal::service('file_system')->mkdir('private://');
 
     // Do not use user 1.
     $this->createAccount();

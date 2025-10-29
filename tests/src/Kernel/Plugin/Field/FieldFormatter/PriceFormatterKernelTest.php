@@ -64,6 +64,9 @@ class PriceFormatterKernelTest extends MonetizationKernelTestBase {
    */
   protected function setUp():void {
     parent::setUp();
+    $this->installConfig(['system']);
+    $this->setSetting('file_public_path', 'sites/default/files');
+    \Drupal::service('file_system')->mkdir('private://');
 
     $this->productBundle = $this->createProductBundle();
     $this->ratePlan = $this->createRatePlan($this->productBundle);

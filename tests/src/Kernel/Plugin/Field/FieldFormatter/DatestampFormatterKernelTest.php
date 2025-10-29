@@ -75,9 +75,12 @@ class DatestampFormatterKernelTest extends MonetizationKernelTestBase {
 
     $this->installEntitySchema('user');
     $this->installSchema('user', ['users_data']);
+    $this->installConfig(['system']);
     $this->installConfig([
       'user',
     ]);
+    $this->setSetting('file_public_path', 'sites/default/files');
+    \Drupal::service('file_system')->mkdir('private://');
 
     // Do not use user 1.
     $this->createAccount();

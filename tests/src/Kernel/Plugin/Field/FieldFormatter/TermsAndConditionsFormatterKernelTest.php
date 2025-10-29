@@ -65,6 +65,9 @@ class TermsAndConditionsFormatterKernelTest extends MonetizationKernelTestBase {
 
     $this->installEntitySchema('user');
     $this->installSchema('user', ['users_data']);
+    $this->installConfig(['system']);
+    $this->setSetting('file_public_path', 'sites/default/files');
+    \Drupal::service('file_system')->mkdir('private://');
 
     $this->formatter_manager = $this->container->get('plugin.manager.field.formatter');
     $this->field_manager = $this->container->get('entity_field.manager');
