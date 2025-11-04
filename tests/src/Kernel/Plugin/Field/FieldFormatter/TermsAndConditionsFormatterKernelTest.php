@@ -35,6 +35,13 @@ use Drupal\apigee_m10n\Plugin\Field\FieldType\TermsAndConditionsFieldItem;
 class TermsAndConditionsFormatterKernelTest extends MonetizationKernelTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected static $modules = [
+    'file', 'system',
+  ];
+
+  /**
    * Drupal user.
    *
    * @var \Drupal\user\UserInterface

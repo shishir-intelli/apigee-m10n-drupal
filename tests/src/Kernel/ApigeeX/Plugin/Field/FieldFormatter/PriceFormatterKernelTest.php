@@ -72,8 +72,6 @@ class PriceFormatterKernelTest extends MonetizationKernelTestBase {
     $this->installConfig([
       'system',
     ]);
-    $this->setSetting('file_public_path', 'sites/default/files');
-    \Drupal::service('file_system')->mkdir('private://');
 
     // Get pre-configured token storage service for testing.
     $this->storeToken();
@@ -81,6 +79,8 @@ class PriceFormatterKernelTest extends MonetizationKernelTestBase {
     $this->stack->reset();
     $this->xproduct = $this->createApigeexProduct();
     $this->stack->reset();
+    $this->setSetting('file_public_path', 'sites/default/files');
+    \Drupal::service('file_system')->mkdir('private://');
     $this->ratePlan = $this->createRatePlan($this->xproduct);
 
     $this->formatterManager = $this->container->get('plugin.manager.field.formatter');

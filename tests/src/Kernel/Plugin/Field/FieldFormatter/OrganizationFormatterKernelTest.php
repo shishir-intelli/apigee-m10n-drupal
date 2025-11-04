@@ -33,6 +33,13 @@ use Drupal\apigee_m10n\Plugin\Field\FieldType\OrganizationFieldItem;
 class OrganizationFormatterKernelTest extends MonetizationKernelTestBase {
 
   /**
+   * {@inheritdoc}
+   */
+  protected static $modules = [
+    'file', 'system',
+  ];
+
+  /**
    * The formatter manager.
    *
    * @var \Drupal\Core\Field\FormatterPluginManager

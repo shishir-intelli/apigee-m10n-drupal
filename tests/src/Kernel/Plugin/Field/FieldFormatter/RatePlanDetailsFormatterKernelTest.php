@@ -36,6 +36,13 @@ class RatePlanDetailsFormatterKernelTest extends MonetizationKernelTestBase {
   use RatePlanDetailsKernelTestAssertionTrait;
 
   /**
+   * {@inheritdoc}
+   */
+  protected static $modules = [
+    'file', 'system',
+  ];
+
+  /**
    * The formatter manager.
    *
    * @var \Drupal\Core\Field\FormatterPluginManager

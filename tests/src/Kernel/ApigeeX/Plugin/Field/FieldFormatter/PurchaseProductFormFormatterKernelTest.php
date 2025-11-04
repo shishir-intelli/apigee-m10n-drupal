@@ -35,7 +35,7 @@ class PurchaseProductFormFormatterKernelTest extends MonetizationKernelTestBase 
   /**
    * {@inheritdoc}
    */
-  protected static $modules = ['file'];
+  protected static $modules = ['file', 'system'];
 
   /**
    * The formatter manager.
@@ -88,6 +88,8 @@ class PurchaseProductFormFormatterKernelTest extends MonetizationKernelTestBase 
       'user',
       'system',
     ]);
+    $this->setSetting('file_public_path', 'sites/default/files');
+    \Drupal::service('file_system')->mkdir('private://');
 
     // Get pre-configured token storage service for testing.
     $this->storeToken();

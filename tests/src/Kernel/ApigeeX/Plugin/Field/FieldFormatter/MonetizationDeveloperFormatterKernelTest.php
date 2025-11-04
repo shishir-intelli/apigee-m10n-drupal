@@ -91,8 +91,8 @@ class MonetizationDeveloperFormatterKernelTest extends MonetizationKernelTestBas
     $this->installEntitySchema('user');
     $this->installSchema('user', ['users_data']);
     $this->installConfig([
-      'user',
       'system',
+      'user',
     ]);
     $this->setSetting('file_public_path', 'sites/default/files');
     \Drupal::service('file_system')->mkdir('private://');
