@@ -65,6 +65,11 @@ class ModuleInstallKernelTest extends KernelTestBase {
     $this->admin = $this->createUser([], NULL, TRUE);
     $this->setCurrentUser($this->admin);
 
+    // Set the private file path for the test environment.
+    $this->setSetting('file_private_path', $this->vfsRoot->url() . '/private');
+    // Rebuild the container to apply the new setting.
+    $this->container->get('kernel')->rebuildContainer();
+
     $this->installEntitySchema('file');
   }
 
