@@ -33,13 +33,6 @@ use Drupal\apigee_m10n\Plugin\Field\FieldType\PurchaseFieldItem;
 class PurchasePlanFormFormatterKernelTest extends MonetizationKernelTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'file', 'system',
-  ];
-
-  /**
    * The formatter manager.
    *
    * @var \Drupal\Core\Field\FormatterPluginManager
@@ -90,8 +83,6 @@ class PurchasePlanFormFormatterKernelTest extends MonetizationKernelTestBase {
       'user',
       'system',
     ]);
-    $this->setSetting('file_public_path', 'sites/default/files');
-    \Drupal::service('file_system')->mkdir('private://');
 
     $this->developer = $this->createAccount([
       'view own purchased_plan',

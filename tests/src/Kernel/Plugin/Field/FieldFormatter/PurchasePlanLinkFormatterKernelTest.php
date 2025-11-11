@@ -33,13 +33,6 @@ use Drupal\apigee_m10n\Plugin\Field\FieldType\PurchaseFieldItem;
 class PurchasePlanLinkFormatterKernelTest extends MonetizationKernelTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'file', 'system',
-  ];
-
-  /**
    * The formatter manager.
    *
    * @var \Drupal\Core\Field\FormatterPluginManager
@@ -81,8 +74,6 @@ class PurchasePlanLinkFormatterKernelTest extends MonetizationKernelTestBase {
       'user',
       'system',
     ]);
-    $this->setSetting('file_public_path', 'sites/default/files');
-    \Drupal::service('file_system')->mkdir('private://');
 
     $this->formatter_manager = $this->container->get('plugin.manager.field.formatter');
     $this->field_manager = $this->container->get('entity_field.manager');

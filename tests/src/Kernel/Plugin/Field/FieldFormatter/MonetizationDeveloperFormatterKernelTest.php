@@ -34,13 +34,6 @@ use Drupal\apigee_m10n\Plugin\Field\FieldType\MonetizationDeveloperFieldItem;
 class MonetizationDeveloperFormatterKernelTest extends MonetizationKernelTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected static $modules = [
-    'file', 'system',
-  ];
-
-  /**
    * The formatter manager.
    *
    * @var \Drupal\Core\Field\FormatterPluginManager
@@ -92,12 +85,9 @@ class MonetizationDeveloperFormatterKernelTest extends MonetizationKernelTestBas
 
     $this->installEntitySchema('user');
     $this->installSchema('user', ['users_data']);
-    $this->installConfig(['system']);
     $this->installConfig([
       'user',
     ]);
-    $this->setSetting('file_public_path', 'sites/default/files');
-    \Drupal::service('file_system')->mkdir('private://');
 
     // Do not use user 1.
     $this->createAccount();

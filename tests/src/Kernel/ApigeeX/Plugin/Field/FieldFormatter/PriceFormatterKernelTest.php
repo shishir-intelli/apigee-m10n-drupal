@@ -32,11 +32,6 @@ use Drupal\apigee_m10n\Plugin\Field\FieldFormatter\PriceFormatter;
 class PriceFormatterKernelTest extends MonetizationKernelTestBase {
 
   /**
-   * {@inheritdoc}
-   */
-  protected static $modules = ['file', 'system'];
-
-  /**
    * The formatter manager.
    *
    * @var \Drupal\Core\Field\FormatterPluginManager
@@ -69,9 +64,6 @@ class PriceFormatterKernelTest extends MonetizationKernelTestBase {
    */
   protected function setUp(): void {
     parent::setUp();
-    $this->installConfig([
-      'system',
-    ]);
 
     // Get pre-configured token storage service for testing.
     $this->storeToken();
@@ -79,8 +71,6 @@ class PriceFormatterKernelTest extends MonetizationKernelTestBase {
     $this->stack->reset();
     $this->xproduct = $this->createApigeexProduct();
     $this->stack->reset();
-    $this->setSetting('file_public_path', 'sites/default/files');
-    \Drupal::service('file_system')->mkdir('private://');
     $this->ratePlan = $this->createRatePlan($this->xproduct);
 
     $this->formatterManager = $this->container->get('plugin.manager.field.formatter');
