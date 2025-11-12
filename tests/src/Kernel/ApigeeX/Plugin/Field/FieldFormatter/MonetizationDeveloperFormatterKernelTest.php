@@ -183,7 +183,7 @@ class MonetizationDeveloperFormatterKernelTest extends MonetizationKernelTestBas
     static::assertSame($this->purchasedProduct->getDeveloper()->getName(), (string) $build[0]['#markup']);
 
     $this->render($build);
-    $this->assertSession()->pageTextContains($this->purchasedProduct->getDeveloper()->getName());
+    $this->assertText($this->purchasedProduct->getDeveloper()->getName());
   }
 
 }
