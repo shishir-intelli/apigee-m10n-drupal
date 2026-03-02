@@ -20,7 +20,8 @@ on:
   push:
   pull_request_target:
   schedule:
-    - cron: '16 06 * * *'
+    - cron: '22 06 * * *'
+  workflow_dispatch: # <--- This is the key!
 
 jobs:
   build:
