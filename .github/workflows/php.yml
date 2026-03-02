@@ -20,7 +20,7 @@ on:
   push:
   pull_request_target:
   schedule:
-    - cron: '10 06 * * *'
+    - cron: '16 06 * * *'
 
 jobs:
   build:
