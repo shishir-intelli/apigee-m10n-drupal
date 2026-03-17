@@ -29,8 +29,8 @@
     <env name="SIMPLETEST_DB" value=""/>
     <!-- Example BROWSERTEST_OUTPUT_DIRECTORY value: /path/to/webroot/sites/simpletest/browser_output -->
     <env name="BROWSERTEST_OUTPUT_DIRECTORY" value=""/>
-    <!-- To disable deprecation testing completely uncomment the next line. -->
-    <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
+    <!-- Set to "weak" to process deprecations, required for <deprecations> block to work. -->
+    <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
     <!-- Example for changing the driver class for mink tests MINK_DRIVER_CLASS value: 'Drupal\FunctionalJavascriptTests\DrupalSelenium2Driver' -->
     <!-- Example for changing the driver args to mink tests MINK_DRIVER_ARGS value: '["http://127.0.0.1:8510"]' -->
     <!-- Example for changing the driver args to phantomjs tests MINK_DRIVER_ARGS_PHANTOMJS value: '["http://127.0.0.1:8510"]' -->
@@ -66,6 +66,16 @@
     <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener">
     </listener>
   </listeners>
+
+  <!-- Configuration for Symfony PHPUnit Bridge deprecation handling -->
+  <deprecations>
+    <!-- Ignore the specific MemoryBackend::__construct deprecation -->
+    <ignoreMessage message="Calling Drupal\Core\Cache\MemoryBackend::__construct() without the $time argument is deprecated" />
+
+    <!-- Add other <ignoreMessage> tags here to ignore more deprecations -->
+    <!-- Example: <ignoreMessage message="Another deprecation message fragment..." /> -->
+  </deprecations>
+
   <!-- Filter for coverage reports. -->
   <filter>
     <whitelist processUncoveredFilesFromWhitelist="true">
