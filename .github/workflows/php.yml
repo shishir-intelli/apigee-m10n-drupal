@@ -36,15 +36,11 @@ jobs:
       fail-fast: false
       matrix:
         php-version:
-          - "8.2"
           - "8.3"
         drupal-core:
           # Should update the following as the minimum supported version from Drupal.org
-          - "10.5.x"
           - "10.6.x"
-          - "11.2.x"
         instance-type:
-          - "Edge"
           - "X"
         exclude:
           - php-version: "8.2"
@@ -56,9 +52,9 @@ jobs:
 
     steps:
 
-    - name: Disable deprecations check for PR
-      if: github.event_name != 'schedule'
-      run: |
+    # - name: Disable deprecations check for PR
+      # if: github.event_name != 'schedule'
+      # run: |
         # echo "Disable deprecations check"
         # echo "SYMFONY_DEPRECATIONS_HELPER=disabled" >> $GITHUB_ENV
 
