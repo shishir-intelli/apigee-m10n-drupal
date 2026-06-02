@@ -1,4 +1,3 @@
-# --- PREVIOUS DEPRECATIONS ---
 # 1. MemoryBackend constructor
 %Calling Drupal\\Core\\Cache\\MemoryBackend::__construct\(\) without the \$time argument is deprecated%
 
@@ -14,8 +13,6 @@
 # 5. FormElement::preRenderAjaxForm()
 %\\Drupal\\Core\\Render\\Element\\FormElement::preRenderAjaxForm\(\) is deprecated%
 
-
-# --- NEW DEPRECATIONS ---
 # 6. Yaml parser class setting
 %The "yaml_parser_class" setting is deprecated%
 
@@ -36,3 +33,15 @@
 
 # 12. RenderElement::preRenderGroup()
 %\\Drupal\\Core\\Render\\Element\\RenderElement::preRenderGroup\(\) is deprecated%
+
+# 13. PHPUnit DefaultResultPrinter internal class warning
+%The "PHPUnit\\TextUI\\DefaultResultPrinter" class is considered internal%
+
+# 14. DrupalListener interface / trait deprecations
+%The "Drupal\\Tests\\Listeners\\DrupalListener" class (implements|uses) "PHPUnit\\Framework\\TestListener.*" that is deprecated%
+
+# 15. PHPUnit TestCase::addWarning() internal method warning
+%The "PHPUnit\\Framework\\TestCase::addWarning\(\)" method is considered internal%
+
+# 16. Symfony ContainerAwareTrait deprecation
+%Since symfony/dependency-injection 6.4: "Symfony\\Component\\DependencyInjection\\ContainerAwareTrait" is deprecated%
