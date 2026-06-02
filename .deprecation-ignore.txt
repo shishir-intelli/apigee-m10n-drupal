@@ -47,7 +47,7 @@
 %Since symfony/dependency-injection 6.4: "Symfony\\Component\\DependencyInjection\\ContainerAwareTrait" is deprecated%
 
 # 17. IteratorAggregate native return type warnings (Map, ContentEntityBase, etc.)
-%Method "IteratorAggregate::getIterator\(\)" might add "\\\\Traversable" as a native return type declaration%
+%Method "IteratorAggregate::getIterator\(\)" might add ".*" as a native return type declaration%
 
 # 18. ModuleHandler::getName() deprecation
 %Drupal\\Core\\Extension\\ModuleHandler::getName\(\) is deprecated%
