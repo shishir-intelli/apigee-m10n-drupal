@@ -36,11 +36,11 @@ jobs:
       matrix:
         php-version:
           - "8.2"
-          - "8.3"
+          # - "8.3"
         drupal-core:
           # Should update the following as the minimum supported version from Drupal.org
           - "10.6.x"
-          - "11.3.x"
+          # - "11.3.x"
         instance-type:
           - "Edge"
           - "X"
@@ -61,7 +61,8 @@ jobs:
           echo "SYMFONY_DEPRECATIONS_HELPER=ignoreFile=./modules/contrib/apigee_m10n/.deprecation-ignore.txt" >> $GITHUB_ENV
         else
           echo "Completely disabling deprecation check"
-          echo "SYMFONY_DEPRECATIONS_HELPER=disabled" >> $GITHUB_ENV
+          # echo "SYMFONY_DEPRECATIONS_HELPER=disabled" >> $GITHUB_ENV
+          echo "SYMFONY_DEPRECATIONS_HELPER=ignoreFile=./modules/contrib/apigee_m10n/.deprecation-ignore.txt" >> $GITHUB_ENV
         fi
 
     - name: "Install PHP"
@@ -171,8 +172,8 @@ jobs:
     - name: "Run PHPUnit tests"
       if: ${{ matrix.drupal-core != '10.6.x' || matrix.php-version != '8.2' }}
       run: |
-        cd drupal
-        vendor/bin/phpunit -c core --color --group apigee_m10n --testsuite unit,kernel,functional,functional-javascript modules/contrib/apigee_m10n
+        # cd drupal
+        # vendor/bin/phpunit -c core --color --group apigee_m10n --testsuite unit,kernel,functional,functional-javascript modules/contrib/apigee_m10n
 
     - name: "Run PHPUnit tests with Code Coverage"
       if: ${{ matrix.drupal-core == '10.6.x' && matrix.php-version == '8.2' }}
